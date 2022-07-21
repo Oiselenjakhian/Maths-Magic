@@ -49,6 +49,19 @@ class bootGame extends Phaser.Scene {
 
         this.load.image("logo", "assets/images/logo.png");
         this.load.image("bg_plain", "assets/images/bg_plain.png");
+        this.load.image("pos_target_num", "assets/images/pos_target_num.png");
+        this.load.image("pos_buttons", "assets/images/pos_buttons.png");
+        this.load.image("0-display", "assets/images/0-display.png");
+        this.load.image("clear-red", "assets/images/clear-red.png");
+        this.load.image("1-over", "assets/images/1-over.png");
+        this.load.image("2-over", "assets/images/2-over.png");
+        this.load.image("3-over", "assets/images/3-over.png");
+        this.load.image("4-over", "assets/images/4-over.png");
+        this.load.image("5-over", "assets/images/5-over.png");
+        this.load.image("6-over", "assets/images/6-over.png");
+        this.load.image("7-over", "assets/images/7-over.png");
+        this.load.image("8-over", "assets/images/8-over.png");
+        this.load.image("9-over", "assets/images/9-over.png");
 
         this.load.on('progress', function(value) {
             progressBar.clear();
@@ -69,6 +82,11 @@ class bootGame extends Phaser.Scene {
         var logo = this.add.image(270, 480, "logo");
         logo.setDepth(1);
         var bg_plain = this.add.image(270, 480, "bg_plain");
+        var timer = this.time.delayedCall(0, this.switchScreen, [], this);
+    }
+
+    switchScreen() {
+        this.scene.start("GameScreen");
     }
 }
 
@@ -78,7 +96,20 @@ class gameScreen extends Phaser.Scene {
 	}
     
     create() {
-
+        var bg_plain = this.add.image(270, 480, "bg_plain");
+        var pos_target_num = this.add.image(270, 480, "pos_target_num");
+        var pos_buttons = this.add.image(270, 480, "pos_buttons");
+        var target = this.add.image(270, 480, "0-display");
+        var clear = this.add.image(270, 700, "clear-red");
+        var one = this.add.image(140, 660, "1-over");
+        var two = this.add.image(60, 550, "2-over");
+        var three = this.add.image(60, 410, "3-over");
+        var four = this.add.image(140, 300, "4-over");
+        var five = this.add.image(270, 260, "5-over");
+        var six = this.add.image(400, 300, "6-over");
+        var seven = this.add.image(480, 410, "7-over");
+        var eight = this.add.image(480, 550, "8-over");
+        var nine = this.add.image(400, 660, "9-over");
     }
 }
 
