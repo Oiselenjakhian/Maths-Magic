@@ -62,6 +62,9 @@ class bootGame extends Phaser.Scene {
         this.load.image("7-over", "assets/images/7-over.png");
         this.load.image("8-over", "assets/images/8-over.png");
         this.load.image("9-over", "assets/images/9-over.png");
+        this.load.image("start_button", "assets/images/start_button.png");
+        this.load.image("retry_b", "assets/images/retry_b.png");
+        this.load.image("info_b", "assets/images/info_b.png");
 
         this.load.on('progress', function(value) {
             progressBar.clear();
@@ -110,6 +113,13 @@ class gameScreen extends Phaser.Scene {
         var seven = this.add.image(480, 410, "7-over");
         var eight = this.add.image(480, 550, "8-over");
         var nine = this.add.image(400, 660, "9-over");
+        var start = this.add.image(270, 870, "start_button");
+        start.setScale(2);
+        var retry = this.add.image(100, 860, "retry_b");
+        var info = this.add.image(450, 860, "info_b");
+        var timeText = this.add.text(20, 50, 'Time: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
+		var totalText = this.add.text(170, 50, 'Total: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
+		var scoreText = this.add.text(340, 50, 'Score: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
     }
 }
 

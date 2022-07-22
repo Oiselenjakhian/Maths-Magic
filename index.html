@@ -13,6 +13,7 @@
             type="image/png"
             href="assets/images/logo.png"
         />
+        <link rel="preload" as="font" href="assets/fonts/roboto-slab.thin.ttf" type="font/ttf" />
         <style type="text/css">
             body {
                 padding: 0px;
@@ -25,6 +26,10 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
+            }
+            @font-face {
+                font-family: roboto-slab;
+                src: url('assets/fonts/roboto-slab.thin.ttf');
             }
         </style>
     </head>
