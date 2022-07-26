@@ -1,3 +1,32 @@
+var bg_plain;
+var pos_target_num;
+var pos_buttons;
+var timeText;
+var totalText;
+var scoreText;
+var time = 0;
+var total = 0;
+var score = 0;
+var one;
+var two;
+var three;
+var four;
+var five;
+var six;
+var seven;
+var eight;
+var nine;
+var clear;
+var target;
+var pause;
+var start;
+var retry;
+var info;
+var upperLimit;
+var displayValue = 0;
+var display;
+var target; 
+
 window.onload = function() {
 	var config = {
 		type: Phaser.AUTO,
@@ -86,28 +115,87 @@ class gameScreen extends Phaser.Scene {
 	}
     
     create() {
-        var bg_plain = this.add.image(270, 480, "bg_plain");
-        var pos_target_num = this.add.image(270, 480, "pos_target_num");
-        var pos_buttons = this.add.image(270, 480, "pos_buttons");
-        var timeText = this.add.text(20, 50, 'Time: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
-		var totalText = this.add.text(170, 50, 'Total: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
-		var scoreText = this.add.text(340, 50, 'Score: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
-        var one = this.add.sprite(140, 660, 'atlas', '1-over.png');
-        var two = this.add.sprite(60, 550, 'atlas', '2-over.png');
-        var three = this.add.sprite(60, 410, 'atlas', '3-over.png');
-        var four = this.add.sprite(140, 300, 'atlas', '4-over.png');
-        var five = this.add.sprite(270, 260, 'atlas', '5-over.png');
-        var six = this.add.sprite(400, 300, 'atlas', '6-over.png');
-        var seven = this.add.sprite(480, 410, 'atlas', '7-over.png');
-        var eight = this.add.sprite(480, 550, 'atlas', '8-over.png');
-        var nine = this.add.sprite(400, 660, 'atlas', '9-over.png');
-        var clear = this.add.sprite(270, 700, 'atlas', 'clear-red.png');
-        var target = this.add.sprite(270, 480, 'atlas', '0-display.png');
-        var start = this.add.sprite(270, 870, 'atlas', 'start_button.png');
+        bg_plain = this.add.image(270, 480, "bg_plain");
+        pos_target_num = this.add.image(270, 480, "pos_target_num");
+        pos_buttons = this.add.image(270, 480, "pos_buttons");
+        timeText = this.add.text(20, 50, 'Time: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
+		totalText = this.add.text(170, 50, 'Total: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
+		scoreText = this.add.text(340, 50, 'Score: 0', { fontSize: '40px', fill: '#fff', fontFamily: 'roboto-slab' });
+        one = this.add.sprite(140, 660, 'atlas', '1-over.png');
+        two = this.add.sprite(60, 550, 'atlas', '2-over.png');
+        three = this.add.sprite(60, 410, 'atlas', '3-over.png');
+        four = this.add.sprite(140, 300, 'atlas', '4-over.png');
+        five = this.add.sprite(270, 260, 'atlas', '5-over.png');
+        six = this.add.sprite(400, 300, 'atlas', '6-over.png');
+        seven = this.add.sprite(480, 410, 'atlas', '7-over.png');
+        eight = this.add.sprite(480, 550, 'atlas', '8-over.png');
+        nine = this.add.sprite(400, 660, 'atlas', '9-over.png');
+        clear = this.add.sprite(270, 700, 'atlas', 'clear-red.png');
+        target = this.add.sprite(270, 480, 'atlas', '0-display.png');
+        pause = this.add.sprite(270, 870, 'atlas', 'pause_button.png');
+        pause.setScale(2);
+        pause.setInteractive();
+        pause.setVisible(false);
+        start = this.add.sprite(270, 870, 'atlas', 'start_button.png');
         start.setScale(2);
-        var retry = this.add.sprite(100, 860, 'atlas', 'retry_b.png');
-        var info = this.add.sprite(450, 860, 'atlas', 'info_b.png');
+        start.setInteractive();
+        start.on('pointerdown', () => {
+            startGame();
+        });        
+        retry = this.add.sprite(100, 860, 'atlas', 'retry_b.png');
+        info = this.add.sprite(450, 860, 'atlas', 'info_b.png');
     }
+}
+
+function startGame() {
+    pause.visible = true;
+	start.visible = false;
+
+    clearButtons();
+    changeTargetNumber();
+}
+
+function clearButtons() {
+    one.setFrame("1.png");
+	one.setInteractive();
+    two.setFrame("2.png");
+	two.setInteractive();
+	three.setFrame("3.png");
+	three.setInteractive();
+	four.setFrame("4.png");
+	four.setInteractive();
+	five.setFrame("5.png");
+	five.setInteractive();
+	six.setFrame("6.png");
+	six.setInteractive();
+	seven.setFrame("7.png");
+	seven.setInteractive();
+	eight.setFrame("8.png");
+	eight.setInteractive();
+	nine.setFrame("9.png");
+	nine.setInteractive();
+	clear.setFrame("clear.png");
+	clear.setInteractive();
+}
+
+function changeTargetNumber() {
+    upperLimit = getUpperLimit(score);
+	displayValue = Math.floor(Math.random() * upperLimit) + 1;
+	display = displayValue.toString() + "-display.png";
+	target.visible = true;
+	target.setFrame(display);
+}
+
+function getUpperLimit(score) {
+    if (score >= 0 || score < 50) {
+		return 15;
+	}
+	else if (score >= 50 || score < 100) {
+		return 25;
+	}
+	else {
+		return 35;
+	}
 }
 
 function resizeGame() {
