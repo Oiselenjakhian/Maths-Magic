@@ -29,6 +29,7 @@ var target;
 var playGame;
 var gameTimeout;
 var gameOverOverlay;
+var pausedOverlay;
 
 window.onload = function () {
     var config = {
@@ -84,6 +85,7 @@ class bootGame extends Phaser.Scene {
         this.load.image("pos_target_num", "assets/images/pos_target_num.png");
         this.load.image("pos_buttons", "assets/images/pos_buttons.png");
         this.load.image("gameOver", "assets/images/game-over.png");
+        this.load.image("paused", "assets/images/pause-overlay.png");
         this.load.atlas(
             "atlas",
             "assets/images/texture.png",
@@ -147,20 +149,228 @@ class gameScreen extends Phaser.Scene {
             fontFamily: "roboto-slab, serif",
         });
         one = this.add.sprite(140, 660, "atlas", "1-over.png");
+        one.on("pointerdown", () => {
+            total = total + 1;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                one.setFrame("1-over.png");
+                one.removeInteractive();
+            }
+        });
         two = this.add.sprite(60, 550, "atlas", "2-over.png");
+        two.on("pointerdown", () => {
+            total = total + 2;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                two.setFrame("2-over.png");
+                two.removeInteractive();
+            }
+        });
         three = this.add.sprite(60, 410, "atlas", "3-over.png");
+        three.on("pointerdown", () => {
+            total = total + 3;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                three.setFrame("3-over.png");
+                three.removeInteractive();
+            }
+        });
         four = this.add.sprite(140, 300, "atlas", "4-over.png");
+        four.on("pointerdown", () => {
+            total = total + 4;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                four.setFrame("4-over.png");
+                four.removeInteractive();
+            }
+        });
         five = this.add.sprite(270, 260, "atlas", "5-over.png");
+        five.on("pointerdown", () => {
+            total = total + 5;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                five.setFrame("5-over.png");
+                five.removeInteractive();
+            }
+        });
         six = this.add.sprite(400, 300, "atlas", "6-over.png");
+        six.on("pointerdown", () => {
+            total = total + 6;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                six.setFrame("6-over.png");
+                six.removeInteractive();
+            }
+        });
         seven = this.add.sprite(480, 410, "atlas", "7-over.png");
+        seven.on("pointerdown", () => {
+            total = total + 7;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                seven.setFrame("7-over.png");
+                seven.removeInteractive();
+            }
+        });
         eight = this.add.sprite(480, 550, "atlas", "8-over.png");
+        eight.on("pointerdown", () => {
+            total = total + 8;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                eight.setFrame("8-over.png");
+                eight.removeInteractive();
+            }
+        });
         nine = this.add.sprite(400, 660, "atlas", "9-over.png");
+        nine.on("pointerdown", () => {
+            total = total + 9;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+
+            if (total == displayValue) {
+                score = score + 1;
+                scoreText.setText("Score: " + score.toString());
+                scoreText.setFont("roboto-slab, serif");
+                scoreText.setFontSize("40px");
+
+                time = getTime(score);
+
+                clearTotal();
+                clearButtons();
+                changeTargetNumber();
+            } else {
+                nine.setFrame("9-over.png");
+                nine.removeInteractive();
+            }
+        });
         clear = this.add.sprite(270, 700, "atlas", "clear-red.png");
+        clear.on("pointerdown", () => {
+            clearButtons();
+            total = 0;
+            totalText.setText("Total: " + total.toString());
+            totalText.setFont("roboto-slab, serif");
+            totalText.setFontSize("40px");
+        });
         target = this.add.sprite(270, 480, "atlas", "0-display.png");
         pause = this.add.sprite(270, 870, "atlas", "pause_button.png");
         pause.setScale(2);
         pause.setInteractive();
         pause.setVisible(false);
+        pause.on("pointerdown", () => {
+            pauseGame();
+        });
         start = this.add.sprite(270, 870, "atlas", "start_button.png");
         start.setScale(2);
         start.setInteractive();
@@ -171,8 +381,15 @@ class gameScreen extends Phaser.Scene {
         info = this.add.sprite(450, 860, "atlas", "info_b.png");
         gameOverOverlay = this.add.image(270, 480, "gameOver");
         gameOverOverlay.visible = false;
-        gameOverOverlay.setInteractive().on("pointerdown", function () {
+        gameOverOverlay.setInteractive();
+        gameOverOverlay.on("pointerdown", function () {
             restartGame();
+        });
+        pausedOverlay = this.add.image(270, 480, "paused");
+        pausedOverlay.visible = false;
+        pausedOverlay.setInteractive();
+        pausedOverlay.on("pointerdown", function () {
+            startPausedGame();
         });
     }
 }
@@ -202,8 +419,10 @@ function startGame() {
     time = getTime(score);
     timer();
 
-    console.log(time);
+    const myTimeout = setTimeout(changeDisplay, 1000);
+}
 
+function changeDisplay() {
     clearButtons();
     changeTargetNumber();
 }
@@ -213,6 +432,30 @@ function restartGame() {
     start.visible = true;
     gameOverOverlay.visible = false;
     resetButtons();
+    resetTargetNumber();
+    time = 0;
+    timeText.setText("Time: " + time.toString());
+    timeText.setFont("roboto-slab, serif");
+    timeText.setFontSize("40px");
+    total = 0;
+    totalText.setText("Total: " + total.toString());
+    totalText.setFont("roboto-slab, serif");
+    totalText.setFontSize("40px");
+    score = 0;
+    scoreText.setText("Score: " + score.toString());
+    scoreText.setFont("roboto-slab, serif");
+    scoreText.setFontSize("40px");
+}
+
+function pauseGame() {
+    playGame = false;
+    pausedOverlay.visible = true;
+}
+
+function startPausedGame() {
+    playGame = true;
+    pausedOverlay.visible = false;
+    timer();
 }
 
 function clearButtons() {
@@ -240,26 +483,30 @@ function clearButtons() {
 
 function resetButtons() {
     one.setFrame("1-over.png");
-	two.setFrame("2-over.png");
-	three.setFrame("3-over.png");
-	four.setFrame("4-over.png");
-	five.setFrame("5-over.png");
-	six.setFrame("6-over.png");
-	seven.setFrame("7-over.png");
-	eight.setFrame("8-over.png");
-	nine.setFrame("9-over.png");
-	clear.setFrame("clear-red.png");
+    two.setFrame("2-over.png");
+    three.setFrame("3-over.png");
+    four.setFrame("4-over.png");
+    five.setFrame("5-over.png");
+    six.setFrame("6-over.png");
+    seven.setFrame("7-over.png");
+    eight.setFrame("8-over.png");
+    nine.setFrame("9-over.png");
+    clear.setFrame("clear-red.png");
 
     one.removeInteractive();
-	two.removeInteractive();
-	three.removeInteractive();
-	four.removeInteractive();
-	five.removeInteractive();
-	six.removeInteractive();
-	seven.removeInteractive();
-	eight.removeInteractive();
-	nine.removeInteractive();
-	clear.removeInteractive();
+    two.removeInteractive();
+    three.removeInteractive();
+    four.removeInteractive();
+    five.removeInteractive();
+    six.removeInteractive();
+    seven.removeInteractive();
+    eight.removeInteractive();
+    nine.removeInteractive();
+    clear.removeInteractive();
+}
+
+function resetTargetNumber() {
+    target.setFrame("0-display.png");
 }
 
 function changeTargetNumber() {
@@ -272,6 +519,14 @@ function changeTargetNumber() {
 
 function gameOver() {
     gameOverOverlay.visible = true;
+    playGame = false;
+}
+
+function clearTotal() {
+    total = 0;
+    totalText.setText("Total: " + total.toString());
+    totalText.setFont("roboto-slab, serif");
+    totalText.setFontSize("40px");
 }
 
 function getUpperLimit(score) {
