@@ -401,7 +401,6 @@ function timer() {
             timeText.setFont("roboto-slab, serif");
             timeText.setFontSize("40px");
             time--;
-            console.log(time);
             if (time == -1) {
                 gameOver();
             } else {
@@ -530,23 +529,23 @@ function clearTotal() {
 }
 
 function getUpperLimit(score) {
-    if (score >= 0 || score < 50) {
-        return 15;
-    } else if (score >= 50 || score < 100) {
-        return 25;
+    if (score >= 0 && score < 50) {
+        return 10;
+    } else if (score >= 50 && score < 100) {
+        return 20;
     } else {
-        return 35;
+        return 30;
     }
 }
 
 function getTime(score) {
-    if (score >= 0 || score < 50) {
+    if (score >= 0 && score < 50) {
         return 10;
-    } else if (score >= 50 || score < 100) {
+    } else if (score >= 50 && score < 100) {
         return 8;
-    } else if (score >= 100 || score < 150) {
+    } else if (score >= 100 && score < 150) {
         return 6;
-    } else if (score >= 150 || score < 200) {
+    } else if (score >= 150 && score < 200) {
         return 4;
     } else {
         return 3;
