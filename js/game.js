@@ -155,16 +155,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 one.setFrame("1-over.png");
                 one.removeInteractive();
@@ -178,16 +174,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 two.setFrame("2-over.png");
                 two.removeInteractive();
@@ -201,16 +193,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 three.setFrame("3-over.png");
                 three.removeInteractive();
@@ -224,16 +212,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 four.setFrame("4-over.png");
                 four.removeInteractive();
@@ -247,16 +231,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 five.setFrame("5-over.png");
                 five.removeInteractive();
@@ -270,16 +250,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 six.setFrame("6-over.png");
                 six.removeInteractive();
@@ -293,16 +269,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 seven.setFrame("7-over.png");
                 seven.removeInteractive();
@@ -316,16 +288,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 eight.setFrame("8-over.png");
                 eight.removeInteractive();
@@ -339,16 +307,12 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                score = score + 1;
-                scoreText.setText("Score: " + score.toString());
-                scoreText.setFont("roboto-slab, serif");
-                scoreText.setFontSize("35px");
+                increaseScore();
 
                 time = getTime(score);
 
                 clearTotal();
-                clearButtons();
-                changeTargetNumber();
+                changeDisplay();
             } else {
                 nine.setFrame("9-over.png");
                 nine.removeInteractive();
@@ -357,10 +321,7 @@ class gameScreen extends Phaser.Scene {
         clear = this.add.sprite(270, 700, "atlas", "clear-red.png");
         clear.on("pointerdown", () => {
             clearButtons();
-            total = 0;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
+            clearTotal();
         });
         target = this.add.sprite(270, 480, "atlas", "0-display.png");
         pause = this.add.sprite(270, 870, "atlas", "pause_button.png");
@@ -525,6 +486,13 @@ function clearTotal() {
     totalText.setText("Total: " + total.toString());
     totalText.setFont("roboto-slab, serif");
     totalText.setFontSize("35px");
+}
+
+function increaseScore() {
+    score = score + 1;
+    scoreText.setText("Score: " + score.toString());
+    scoreText.setFont("roboto-slab, serif");
+    scoreText.setFontSize("35px");
 }
 
 function getUpperLimit(score) {
