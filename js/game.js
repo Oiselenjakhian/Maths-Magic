@@ -155,12 +155,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                one.setFrame("1-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 one.setFrame("1-over.png");
                 one.removeInteractive();
@@ -174,12 +178,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                two.setFrame("2-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 two.setFrame("2-over.png");
                 two.removeInteractive();
@@ -193,12 +201,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                three.setFrame("3-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 three.setFrame("3-over.png");
                 three.removeInteractive();
@@ -212,12 +224,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                four.setFrame("4-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 four.setFrame("4-over.png");
                 four.removeInteractive();
@@ -231,12 +247,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                five.setFrame("5-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 five.setFrame("5-over.png");
                 five.removeInteractive();
@@ -250,12 +270,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                six.setFrame("6-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 six.setFrame("6-over.png");
                 six.removeInteractive();
@@ -269,12 +293,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                seven.setFrame("7-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 seven.setFrame("7-over.png");
                 seven.removeInteractive();
@@ -288,12 +316,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                eight.setFrame("8-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 eight.setFrame("8-over.png");
                 eight.removeInteractive();
@@ -307,12 +339,16 @@ class gameScreen extends Phaser.Scene {
             totalText.setFontSize("35px");
 
             if (total == displayValue) {
-                increaseScore();
+                playGame = false;
 
-                time = getTime(score);
+                nine.setFrame("9-over.png");
+                removeAllInteractive();
+                // increaseScore();
 
-                clearTotal();
-                changeDisplay();
+                // time = getTime(score);
+
+                // clearTotal();
+                // changeDisplay();
             } else {
                 nine.setFrame("9-over.png");
                 nine.removeInteractive();
@@ -452,6 +488,10 @@ function resetButtons() {
     nine.setFrame("9-over.png");
     clear.setFrame("clear-red.png");
 
+    removeAllInteractive();
+}
+
+function removeAllInteractive() {
     one.removeInteractive();
     two.removeInteractive();
     three.removeInteractive();
