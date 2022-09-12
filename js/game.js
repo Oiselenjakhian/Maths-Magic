@@ -1,3 +1,4 @@
+var game;
 var bg_plain;
 var pos_target_num;
 var pos_buttons;
@@ -36,6 +37,9 @@ window.onload = function () {
         parent: "phaser-example",
         width: 540,
         height: 960,
+        audio: {
+            disableWebAudio: true
+        },
         scene: [bootGame, gameScreen],
     };
     game = new Phaser.Game(config);
@@ -90,6 +94,9 @@ class bootGame extends Phaser.Scene {
             "assets/images/texture.png",
             "assets/images/texture.json"
         );
+        this.load.audio("background", "assets/sounds/background.mp3");
+        this.load.audio("click", "assets/sounds/click.ogg");
+        this.load.audio("bubble", "assets/sounds/bubble.ogg");
 
         this.load.on("progress", function (value) {
             progressBar.clear();
@@ -129,6 +136,41 @@ class gameScreen extends Phaser.Scene {
     }
 
     create() {
+        this.clickSound = this.sound.add("click");
+        this.bubbleSound = this.sound.add("bubble");
+
+        this.sound.pauseOnBlur = false;
+        this.sound.unlock();
+        this.music = this.sound.add("background", {
+            mute: false,
+            volume: 0.15,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0,
+        });
+
+        if (!this.sound.locked) {
+            this.music.play();
+        } else {
+            this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
+                this.music.play();
+            });
+        }
+
+        this.game.events.on(Phaser.Core.Events.BLUR, () => {
+            this.handleLoseFocus();
+        });
+
+        document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) {
+                return;
+            }
+
+            this.handleLoseFocus();
+        });
+
         bg_plain = this.add.image(270, 480, "bg_plain");
         pos_target_num = this.add.image(270, 480, "pos_target_num");
         pos_buttons = this.add.image(270, 480, "pos_buttons");
@@ -154,17 +196,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 one.setFrame("1-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 one.setFrame("1-over.png");
                 one.removeInteractive();
@@ -177,17 +219,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 two.setFrame("2-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 two.setFrame("2-over.png");
                 two.removeInteractive();
@@ -200,17 +242,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 three.setFrame("3-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 three.setFrame("3-over.png");
                 three.removeInteractive();
@@ -223,17 +265,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 four.setFrame("4-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 four.setFrame("4-over.png");
                 four.removeInteractive();
@@ -246,17 +288,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 five.setFrame("5-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 five.setFrame("5-over.png");
                 five.removeInteractive();
@@ -269,17 +311,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 six.setFrame("6-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 six.setFrame("6-over.png");
                 six.removeInteractive();
@@ -292,17 +334,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 seven.setFrame("7-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 seven.setFrame("7-over.png");
                 seven.removeInteractive();
@@ -315,17 +357,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 eight.setFrame("8-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 eight.setFrame("8-over.png");
                 eight.removeInteractive();
@@ -338,17 +380,17 @@ class gameScreen extends Phaser.Scene {
             totalText.setFont("roboto-slab, serif");
             totalText.setFontSize("35px");
 
+            this.clickSound.play();
+
             if (total == displayValue) {
                 playGame = false;
 
                 nine.setFrame("9-over.png");
                 removeAllInteractive();
-                // increaseScore();
+                this.bubbleSound.play();
 
-                // time = getTime(score);
-
-                // clearTotal();
-                // changeDisplay();
+                const reset = setTimeout(resetTimer, 500);
+                const update = setTimeout(updateHUD, 1000);
             } else {
                 nine.setFrame("9-over.png");
                 nine.removeInteractive();
@@ -388,6 +430,22 @@ class gameScreen extends Phaser.Scene {
             startPausedGame();
         });
     }
+
+    handleLoseFocus() {
+        if (this.scene.isActive("paused")) {
+            return;
+        }
+
+        this.music.pause();
+
+        this.scene.run("paused", {
+            onResume: () => {
+                this.scene.stop("paused");
+
+                this.music.resume();
+            },
+        });
+    }
 }
 
 function timer() {
@@ -410,9 +468,7 @@ function startGame() {
     pause.visible = true;
     start.visible = false;
 
-    playGame = true;
-    time = getTime(score);
-    timer();
+    resetTimer();
 
     const myTimeout = setTimeout(changeDisplay, 1000);
 }
@@ -420,6 +476,18 @@ function startGame() {
 function changeDisplay() {
     clearButtons();
     changeTargetNumber();
+}
+
+function updateHUD() {
+    increaseScore();
+    clearTotal();
+    changeDisplay();
+}
+
+function resetTimer() {
+    playGame = true;
+    time = getTime(score);
+    timer();
 }
 
 function restartGame() {
