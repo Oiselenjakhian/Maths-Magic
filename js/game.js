@@ -100,6 +100,7 @@ class bootGame extends Phaser.Scene {
         this.load.audio("background_music", "assets/sounds/background.mp3");
         this.load.audio("click", "assets/sounds/click.ogg");
         this.load.audio("bubble", "assets/sounds/bubble.ogg");
+        this.load.audio("startgame", "assets/sounds/startgame.wav");
 
         this.load.on("progress", function (value) {
             progressBar.clear();
@@ -176,6 +177,7 @@ class gameScreen extends Phaser.Scene {
     create() {
         this.clickSound = this.sound.add("click");
         this.bubbleSound = this.sound.add("bubble");
+        this.startGameSound = this.sound.add("startgame");
 
         bg_plain = this.add.image(270, 480, "bg_plain");
         pos_target_num = this.add.image(270, 480, "pos_target_num");
@@ -419,6 +421,7 @@ class gameScreen extends Phaser.Scene {
         start.setScale(2);
         start.setInteractive();
         start.on("pointerdown", () => {
+            this.startGameSound.play();
             startGame();
         });
         retry = this.add.sprite(100, 860, "atlas", "retry_b.png");
@@ -436,6 +439,7 @@ class gameScreen extends Phaser.Scene {
         gameOverOverlay = this.add.image(270, 480, "gameOver");
         gameOverOverlay.visible = false;
         gameOverOverlay.setInteractive();
+        gameOverOverlay.setDepth(0);
         gameOverOverlay.on("pointerdown", function () {
             restartGame();
         });
@@ -508,6 +512,8 @@ function restartGame() {
     scoreText.setText("Score: " + score.toString());
     scoreText.setFont("roboto-slab, serif");
     scoreText.setFontSize("35px");
+    scoreText.x = 340;
+    scoreText.y = 50;
 }
 
 function pauseGame() {
@@ -587,6 +593,12 @@ function changeTargetNumber() {
 function gameOver() {
     gameOverOverlay.visible = true;
     playGame = false;
+    scoreText.setText("Score: " + score.toString());
+    scoreText.setFont("roboto-slab, serif");
+    scoreText.setFontSize("60px");
+    scoreText.setDepth(1);
+    scoreText.x = 135;
+    scoreText.y = 285;
 }
 
 function clearTotal() {
