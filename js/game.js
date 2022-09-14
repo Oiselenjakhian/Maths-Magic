@@ -30,6 +30,7 @@ var playGame;
 var gameTimeout;
 var gameOverOverlay;
 var pausedOverlay;
+var instructionsOverlay;
 
 window.onload = function () {
     var config = {
@@ -37,10 +38,7 @@ window.onload = function () {
         parent: "phaser-example",
         width: 540,
         height: 960,
-        audio: {
-            disableWebAudio: true
-        },
-        scene: [bootGame, gameScreen],
+        scene: [bootGame, menuScreen, gameScreen],
     };
     game = new Phaser.Game(config);
     window.focus();
@@ -89,12 +87,17 @@ class bootGame extends Phaser.Scene {
         this.load.image("pos_buttons", "assets/images/pos_buttons.png");
         this.load.image("gameOver", "assets/images/game-over.png");
         this.load.image("paused", "assets/images/pause-overlay.png");
+        this.load.image("play_btn", "assets/images/play.png");
+        this.load.image("about_btn", "assets/images/about.png");
+        this.load.image("credits_btn", "assets/images/credits.png");
+        this.load.image("click_start", "assets/images/click.png");
+        this.load.image("instructions", "assets/images/instructions-overlay.png");
         this.load.atlas(
             "atlas",
             "assets/images/texture.png",
             "assets/images/texture.json"
         );
-        this.load.audio("background", "assets/sounds/background.mp3");
+        this.load.audio("background_music", "assets/sounds/background.mp3");
         this.load.audio("click", "assets/sounds/click.ogg");
         this.load.audio("bubble", "assets/sounds/bubble.ogg");
 
@@ -119,14 +122,49 @@ class bootGame extends Phaser.Scene {
     }
 
     create() {
-        var logo = this.add.image(270, 480, "logo");
-        logo.setDepth(1);
         var bg_plain = this.add.image(270, 480, "bg_plain");
-        var timer = this.time.delayedCall(0, this.switchScreen, [], this);
+        var logo = this.add.image(270, 480, "logo");
+        var click = this.add.image(270, 240, "click_start");
+        this.input.once(
+            "pointerdown",
+            function () {
+                this.scene.start("MenuScreen");
+            },
+            this
+        );
+    }
+}
+
+class menuScreen extends Phaser.Scene {
+    constructor() {
+        super("MenuScreen");
     }
 
-    switchScreen() {
-        this.scene.start("GameScreen");
+    create() {
+        var music = this.sound.add("background_music");
+        music.play({ loop: true, volume: 0.15 });
+        var bg_plain = this.add.image(270, 480, "bg_plain");
+        var logo = this.add.image(270, 150, "logo");
+        logo.setDepth(1);
+        var play = this.add.image(270, 360, "play_btn");
+        play.setInteractive();
+        play.on(
+            "pointerdown",
+            function () {
+                this.scene.start("GameScreen");
+            },
+            this
+        );
+        var about = this.add.image(270, 540, "about_btn");
+        about.setInteractive();
+        about.on("pointerdown", () => {
+            console.log("About");
+        });
+        var credits = this.add.image(270, 720, "credits_btn");
+        credits.setInteractive();
+        credits.on("pointerdown", () => {
+            console.log("Credits");
+        });
     }
 }
 
@@ -138,38 +176,6 @@ class gameScreen extends Phaser.Scene {
     create() {
         this.clickSound = this.sound.add("click");
         this.bubbleSound = this.sound.add("bubble");
-
-        this.sound.pauseOnBlur = false;
-        this.sound.unlock();
-        this.music = this.sound.add("background", {
-            mute: false,
-            volume: 0.15,
-            rate: 1,
-            detune: 0,
-            seek: 0,
-            loop: true,
-            delay: 0,
-        });
-
-        if (!this.sound.locked) {
-            this.music.play();
-        } else {
-            this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
-                this.music.play();
-            });
-        }
-
-        this.game.events.on(Phaser.Core.Events.BLUR, () => {
-            this.handleLoseFocus();
-        });
-
-        document.addEventListener("visibilitychange", () => {
-            if (!document.hidden) {
-                return;
-            }
-
-            this.handleLoseFocus();
-        });
 
         bg_plain = this.add.image(270, 480, "bg_plain");
         pos_target_num = this.add.image(270, 480, "pos_target_num");
@@ -416,7 +422,17 @@ class gameScreen extends Phaser.Scene {
             startGame();
         });
         retry = this.add.sprite(100, 860, "atlas", "retry_b.png");
+        instructionsOverlay = this.add.image(270, 480, "instructions");
+        instructionsOverlay.visible = false;
+        instructionsOverlay.setInteractive();
+        instructionsOverlay.on("pointerdown", function () {
+            instructionsOverlay.visible = false;
+        });
         info = this.add.sprite(450, 860, "atlas", "info_b.png");
+        info.setInteractive();
+        info.on("pointerdown", () => {
+            instructionsOverlay.visible = true;
+        });
         gameOverOverlay = this.add.image(270, 480, "gameOver");
         gameOverOverlay.visible = false;
         gameOverOverlay.setInteractive();
@@ -428,22 +444,6 @@ class gameScreen extends Phaser.Scene {
         pausedOverlay.setInteractive();
         pausedOverlay.on("pointerdown", function () {
             startPausedGame();
-        });
-    }
-
-    handleLoseFocus() {
-        if (this.scene.isActive("paused")) {
-            return;
-        }
-
-        this.music.pause();
-
-        this.scene.run("paused", {
-            onResume: () => {
-                this.scene.stop("paused");
-
-                this.music.resume();
-            },
         });
     }
 }
