@@ -31,6 +31,11 @@ var gameTimeout;
 var gameOverOverlay;
 var pausedOverlay;
 var instructionsOverlay;
+var aboutOverlay;
+var creditsOverlay;
+var reloadScreen;
+var yesButton;
+var noButton;
 
 window.onload = function () {
     var config = {
@@ -89,9 +94,13 @@ class bootGame extends Phaser.Scene {
         this.load.image("paused", "assets/images/pause-overlay.png");
         this.load.image("play_btn", "assets/images/play.png");
         this.load.image("about_btn", "assets/images/about.png");
-        this.load.image("credits_btn", "assets/images/credits.png");
+        this.load.image("instructions_btn", "assets/images/instructions.png");
         this.load.image("click_start", "assets/images/click.png");
         this.load.image("instructions", "assets/images/instructions-overlay.png");
+        this.load.image("aboutOverlay", "assets/images/aboutOverlay.png");
+        this.load.image("reload_screen", "assets/images/reload.png");
+        this.load.image("yes_btn", "assets/images/yes.png");
+        this.load.image("no_btn", "assets/images/no.png");
         this.load.atlas(
             "atlas",
             "assets/images/texture.png",
@@ -156,15 +165,29 @@ class menuScreen extends Phaser.Scene {
             },
             this
         );
+        aboutOverlay = this.add.image(270, 480, "aboutOverlay");
+        aboutOverlay.setDepth(1);
+        aboutOverlay.visible = false;
+        aboutOverlay.setInteractive();
+        aboutOverlay.on("pointerdown", function () {
+            aboutOverlay.visible = false;
+        });
         var about = this.add.image(270, 540, "about_btn");
         about.setInteractive();
         about.on("pointerdown", () => {
-            console.log("About");
+            aboutOverlay.visible = true;
         });
-        var credits = this.add.image(270, 720, "credits_btn");
-        credits.setInteractive();
-        credits.on("pointerdown", () => {
-            console.log("Credits");
+        instructionsOverlay = this.add.image(270, 480, "instructions");
+        instructionsOverlay.setDepth(1);
+        instructionsOverlay.visible = false;
+        instructionsOverlay.setInteractive();
+        instructionsOverlay.on("pointerdown", function () {
+            instructionsOverlay.visible = false;
+        });
+        var instructions = this.add.image(270, 720, "instructions_btn");
+        instructions.setInteractive();
+        instructions.on("pointerdown", () => {
+            instructionsOverlay.visible = true; 
         });
     }
 }
@@ -424,7 +447,40 @@ class gameScreen extends Phaser.Scene {
             this.startGameSound.play();
             startGame();
         });
+        reloadScreen = this.add.image(270, 480, "reload_screen");
+        reloadScreen.visible = false;
+        reloadScreen.setDepth(1);
+        yesButton = this.add.image(180, 500, "yes_btn");
+        yesButton.setInteractive();
+        yesButton.visible = false;
+        yesButton.setDepth(2);
+        yesButton.on("pointerdown", () => {            
+            reloadScreen.visible = false;
+            yesButton.visible = false;          
+            noButton.visible = false;
+            restartGame();
+        });
+        noButton = this.add.image(350, 500, "no_btn");
+        noButton.setInteractive();
+        noButton.visible = false;
+        noButton.setDepth(2);
+        noButton.on("pointerdown", () => {
+            reloadScreen.visible = false;
+            yesButton.visible = false;          
+            noButton.visible = false;
+            if (time > 0) {
+                playGame = true;
+                timer();
+            }
+        });
         retry = this.add.sprite(100, 860, "atlas", "retry_b.png");
+        retry.setInteractive();
+        retry.on("pointerdown", () => {
+            reloadScreen.visible = true;
+            yesButton.visible = true;          
+            noButton.visible = true;
+            playGame = false;
+        });
         instructionsOverlay = this.add.image(270, 480, "instructions");
         instructionsOverlay.visible = false;
         instructionsOverlay.setInteractive();
