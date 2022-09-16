@@ -96,7 +96,10 @@ class bootGame extends Phaser.Scene {
         this.load.image("about_btn", "assets/images/about.png");
         this.load.image("instructions_btn", "assets/images/instructions.png");
         this.load.image("click_start", "assets/images/click.png");
-        this.load.image("instructions", "assets/images/instructions-overlay.png");
+        this.load.image(
+            "instructions",
+            "assets/images/instructions-overlay.png"
+        );
         this.load.image("aboutOverlay", "assets/images/aboutOverlay.png");
         this.load.image("reload_screen", "assets/images/reload.png");
         this.load.image("yes_btn", "assets/images/yes.png");
@@ -187,7 +190,7 @@ class menuScreen extends Phaser.Scene {
         var instructions = this.add.image(270, 720, "instructions_btn");
         instructions.setInteractive();
         instructions.on("pointerdown", () => {
-            instructionsOverlay.visible = true; 
+            instructionsOverlay.visible = true;
         });
     }
 }
@@ -454,9 +457,9 @@ class gameScreen extends Phaser.Scene {
         yesButton.setInteractive();
         yesButton.visible = false;
         yesButton.setDepth(2);
-        yesButton.on("pointerdown", () => {            
+        yesButton.on("pointerdown", () => {
             reloadScreen.visible = false;
-            yesButton.visible = false;          
+            yesButton.visible = false;
             noButton.visible = false;
             restartGame();
         });
@@ -466,7 +469,7 @@ class gameScreen extends Phaser.Scene {
         noButton.setDepth(2);
         noButton.on("pointerdown", () => {
             reloadScreen.visible = false;
-            yesButton.visible = false;          
+            yesButton.visible = false;
             noButton.visible = false;
             if (time > 0) {
                 playGame = true;
@@ -477,7 +480,7 @@ class gameScreen extends Phaser.Scene {
         retry.setInteractive();
         retry.on("pointerdown", () => {
             reloadScreen.visible = true;
-            yesButton.visible = true;          
+            yesButton.visible = true;
             noButton.visible = true;
             playGame = false;
         });
