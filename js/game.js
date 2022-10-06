@@ -1,13 +1,9 @@
 var game;
+var aboutOverlay;
+var instructionsOverlay;
 var bg_plain;
 var pos_target_num;
 var pos_buttons;
-var timeText;
-var totalText;
-var scoreText;
-var time = 0;
-var total = 0;
-var score = 0;
 var one;
 var two;
 var three;
@@ -23,21 +19,12 @@ var pause;
 var start;
 var retry;
 var info;
-var upperLimit;
-var displayValue = 0;
-var display;
-var playGame;
-var gameTimeout;
-var gameOverOverlay;
-var pausedOverlay;
-var instructionsOverlay;
-var aboutOverlay;
-var creditsOverlay;
-var reloadScreen;
-var yesButton;
-var noButton;
 
+/*
+* Load the game in the browser
+*/
 window.onload = function () {
+    // Configuration
     var config = {
         type: Phaser.AUTO,
         parent: "phaser-example",
@@ -45,25 +32,54 @@ window.onload = function () {
         height: 960,
         scene: [bootGame, menuScreen, gameScreen],
     };
+    
+    // Assign game to its Phaser.Game instance
     game = new Phaser.Game(config);
+
+    // Set focus to the current window
     window.focus();
+
+    // Call the resize function
     resizeGame();
+
+    // Call the resize function every time the window is resized
     window.addEventListener("resize", resizeGame);
 };
 
+/*
+* Boot class to load the assets
+*/
 class bootGame extends Phaser.Scene {
+    // Class constructor
     constructor() {
         super("BootGame");
     }
 
+    /*
+    * Preload function
+    */
     preload() {
+        // Get the width of the canvas
         var width = this.cameras.main.width;
+
+        // Get the height of the canvas
         var height = this.cameras.main.height;
+
+        // Define your progress bar
         var progressBar = this.add.graphics();
+
+        // Define your progress box
         var progressBox = this.add.graphics();
+
+        // Define the progress box fill style
         progressBox.fillStyle(0x222222, 0.8);
+
+        // Define the progress box rectangle
         progressBox.fillRect(width / 2 - 160, height / 2 - 70, 320, 50);
 
+        /*
+        * Define the loading text
+        */
         var loadingText = this.make.text({
             x: width / 2,
             y: height / 2 - 100,
@@ -73,8 +89,13 @@ class bootGame extends Phaser.Scene {
                 fill: "#ffffff",
             },
         });
+
+        // Set the origin of the loading text
         loadingText.setOrigin(0.5, 0.5);
 
+        /*
+        * Define the percent text
+        */
         var percentText = this.make.text({
             x: width / 2,
             y: height / 2 - 45,
@@ -84,8 +105,13 @@ class bootGame extends Phaser.Scene {
                 fill: "#ffffff",
             },
         });
+
+        // Set the origin of the percent text
         percentText.setOrigin(0.5, 0.5);
 
+        /*
+         * Preload the images, spritesheet, music and sounds
+        */
         this.load.image("logo", "assets/images/logo.png");
         this.load.image("bg_plain", "assets/images/bg_plain.png");
         this.load.image("pos_target_num", "assets/images/pos_target_num.png");
@@ -114,6 +140,9 @@ class bootGame extends Phaser.Scene {
         this.load.audio("bubble", "assets/sounds/bubble.ogg");
         this.load.audio("startgame", "assets/sounds/startgame.wav");
 
+        /*
+        * Increase the size of the progress bar as the assets are loaded
+        */
         this.load.on("progress", function (value) {
             progressBar.clear();
             progressBar.fillStyle(0xffffff, 1);
@@ -126,6 +155,9 @@ class bootGame extends Phaser.Scene {
             percentText.setText(parseInt(value * 100) + "%");
         });
 
+        /*
+        * Destroy all elements of the loading screen
+        */
         this.load.on("complete", function () {
             progressBar.destroy();
             progressBox.destroy();
@@ -134,10 +166,22 @@ class bootGame extends Phaser.Scene {
         });
     }
 
+    /*
+    * Display the start screen
+    */
     create() {
+        // Display the plain background image
         var bg_plain = this.add.image(270, 480, "bg_plain");
+
+        // Display the logo
         var logo = this.add.image(270, 480, "logo");
+
+        // Display the instructions
         var click = this.add.image(270, 240, "click_start");
+
+        /*
+        * Go to the menu screen once the screen is clicked
+        */
         this.input.once(
             "pointerdown",
             function () {
@@ -148,19 +192,41 @@ class bootGame extends Phaser.Scene {
     }
 }
 
+/*
+* Menu class for the menu screen
+*/
 class menuScreen extends Phaser.Scene {
+    // Class constructor
     constructor() {
         super("MenuScreen");
     }
 
+    /*
+    * Create the menu and play music
+    */
     create() {
+        // Define the music
         var music = this.sound.add("background_music");
+
+        // Play the music
         music.play({ loop: true, volume: 0.15 });
+
+        // Define the plain background
         var bg_plain = this.add.image(270, 480, "bg_plain");
+
+        // Define the logo
         var logo = this.add.image(270, 150, "logo");
+
+        // Set the z index of the logo
         logo.setDepth(1);
+
+        // Define the play button
         var play = this.add.image(270, 360, "play_btn");
+
+        // Make the play button interactive
         play.setInteractive();
+
+        // Go to the game screen
         play.on(
             "pointerdown",
             function () {
@@ -168,536 +234,153 @@ class menuScreen extends Phaser.Scene {
             },
             this
         );
+
+        // Define the about overlay
         aboutOverlay = this.add.image(270, 480, "aboutOverlay");
+
+        // Set the z index of the about overlay
         aboutOverlay.setDepth(1);
+
+        // Make it invisible
         aboutOverlay.visible = false;
+
+        // Make it interactive
         aboutOverlay.setInteractive();
+
+        // Make the about overlay invisible when it is clicked
         aboutOverlay.on("pointerdown", function () {
             aboutOverlay.visible = false;
         });
+
+        // Define the about button
         var about = this.add.image(270, 540, "about_btn");
+
+        // Make it interactive
         about.setInteractive();
+
+        // Display the about overlay when the about button is clicked
         about.on("pointerdown", () => {
             aboutOverlay.visible = true;
         });
+
+        // Define the instructions overlay
         instructionsOverlay = this.add.image(270, 480, "instructions");
+
+        // Set the z index
         instructionsOverlay.setDepth(1);
+
+        // Make the instructions overlay invisible
         instructionsOverlay.visible = false;
+
+        // Make the instructions overlay interactive
         instructionsOverlay.setInteractive();
+
+        // Make the instructions overlay invisible when it is clicked by the user
         instructionsOverlay.on("pointerdown", function () {
             instructionsOverlay.visible = false;
         });
+
+        // Define the instructions button
         var instructions = this.add.image(270, 720, "instructions_btn");
+
+        // Make the instructions button invisible
         instructions.setInteractive();
+
+        // Make the instruction overlay visible when the instructions button is clicked
         instructions.on("pointerdown", () => {
             instructionsOverlay.visible = true;
         });
     }
 }
 
+/*
+* Game class for the game screen
+*/
 class gameScreen extends Phaser.Scene {
+    // Class constructor
     constructor() {
         super("GameScreen");
     }
 
+    /*
+    * Create the game screen
+    */
     create() {
+        // Define the click sound
         this.clickSound = this.sound.add("click");
+
+        // Define the bubble sound
         this.bubbleSound = this.sound.add("bubble");
+
+        // Define the sound to start the game
         this.startGameSound = this.sound.add("startgame");
 
+        /*
+        * Assemble the user interface
+        */
         bg_plain = this.add.image(270, 480, "bg_plain");
         pos_target_num = this.add.image(270, 480, "pos_target_num");
         pos_buttons = this.add.image(270, 480, "pos_buttons");
-        timeText = this.add.text(20, 50, "Time: 0", {
-            fontSize: "35px",
-            fill: "#fff",
-            fontFamily: "roboto-slab, serif",
-        });
-        totalText = this.add.text(170, 50, "Total: 0", {
-            fontSize: "35px",
-            fill: "#fff",
-            fontFamily: "roboto-slab, serif",
-        });
-        scoreText = this.add.text(340, 50, "Score: 0", {
-            fontSize: "35px",
-            fill: "#fff",
-            fontFamily: "roboto-slab, serif",
-        });
+
+        // Display the number one
         one = this.add.sprite(140, 660, "atlas", "1-over.png");
-        one.on("pointerdown", () => {
-            total = total + 1;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                one.setFrame("1-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                one.setFrame("1-over.png");
-                one.removeInteractive();
-            }
-        });
+        // Display the number two
         two = this.add.sprite(60, 550, "atlas", "2-over.png");
-        two.on("pointerdown", () => {
-            total = total + 2;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                two.setFrame("2-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                two.setFrame("2-over.png");
-                two.removeInteractive();
-            }
-        });
+        // Display the number three
         three = this.add.sprite(60, 410, "atlas", "3-over.png");
-        three.on("pointerdown", () => {
-            total = total + 3;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                three.setFrame("3-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                three.setFrame("3-over.png");
-                three.removeInteractive();
-            }
-        });
+        // Display the number four
         four = this.add.sprite(140, 300, "atlas", "4-over.png");
-        four.on("pointerdown", () => {
-            total = total + 4;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                four.setFrame("4-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                four.setFrame("4-over.png");
-                four.removeInteractive();
-            }
-        });
+        // Display the number five
         five = this.add.sprite(270, 260, "atlas", "5-over.png");
-        five.on("pointerdown", () => {
-            total = total + 5;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                five.setFrame("5-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                five.setFrame("5-over.png");
-                five.removeInteractive();
-            }
-        });
+        // Display the number siz
         six = this.add.sprite(400, 300, "atlas", "6-over.png");
-        six.on("pointerdown", () => {
-            total = total + 6;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                six.setFrame("6-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                six.setFrame("6-over.png");
-                six.removeInteractive();
-            }
-        });
+        // Display the number seven
         seven = this.add.sprite(480, 410, "atlas", "7-over.png");
-        seven.on("pointerdown", () => {
-            total = total + 7;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                seven.setFrame("7-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                seven.setFrame("7-over.png");
-                seven.removeInteractive();
-            }
-        });
+        // Display the number eight
         eight = this.add.sprite(480, 550, "atlas", "8-over.png");
-        eight.on("pointerdown", () => {
-            total = total + 8;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                eight.setFrame("8-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                eight.setFrame("8-over.png");
-                eight.removeInteractive();
-            }
-        });
+        // Display the number nine
         nine = this.add.sprite(400, 660, "atlas", "9-over.png");
-        nine.on("pointerdown", () => {
-            total = total + 9;
-            totalText.setText("Total: " + total.toString());
-            totalText.setFont("roboto-slab, serif");
-            totalText.setFontSize("35px");
 
-            this.clickSound.play();
-
-            if (total == displayValue) {
-                playGame = false;
-
-                nine.setFrame("9-over.png");
-                removeAllInteractive();
-                this.bubbleSound.play();
-
-                const reset = setTimeout(resetTimer, 500);
-                const update = setTimeout(updateHUD, 1000);
-            } else {
-                nine.setFrame("9-over.png");
-                nine.removeInteractive();
-            }
-        });
+        // Display the clear button
         clear = this.add.sprite(270, 700, "atlas", "clear-red.png");
-        clear.on("pointerdown", () => {
-            clearButtons();
-            clearTotal();
-        });
+
+        // Display the target number
         target = this.add.sprite(270, 480, "atlas", "0-display.png");
+
+        // Display the pause button
         pause = this.add.sprite(270, 870, "atlas", "pause_button.png");
+
+        // Increase the size of the pause button by two
         pause.setScale(2);
-        pause.setInteractive();
+
+        // Make the pause button invisible
         pause.setVisible(false);
-        pause.on("pointerdown", () => {
-            pauseGame();
-        });
+
+        // Display the start button
         start = this.add.sprite(270, 870, "atlas", "start_button.png");
+
+        // Increase the size of the start button by two
         start.setScale(2);
-        start.setInteractive();
-        start.on("pointerdown", () => {
-            this.startGameSound.play();
-            startGame();
-        });
-        reloadScreen = this.add.image(270, 480, "reload_screen");
-        reloadScreen.visible = false;
-        reloadScreen.setDepth(1);
-        yesButton = this.add.image(180, 500, "yes_btn");
-        yesButton.setInteractive();
-        yesButton.visible = false;
-        yesButton.setDepth(2);
-        yesButton.on("pointerdown", () => {
-            reloadScreen.visible = false;
-            yesButton.visible = false;
-            noButton.visible = false;
-            restartGame();
-        });
-        noButton = this.add.image(350, 500, "no_btn");
-        noButton.setInteractive();
-        noButton.visible = false;
-        noButton.setDepth(2);
-        noButton.on("pointerdown", () => {
-            reloadScreen.visible = false;
-            yesButton.visible = false;
-            noButton.visible = false;
-            if (time > 0) {
-                playGame = true;
-                timer();
-            }
-        });
+
+        // Display the retry button
         retry = this.add.sprite(100, 860, "atlas", "retry_b.png");
-        retry.setInteractive();
-        retry.on("pointerdown", () => {
-            reloadScreen.visible = true;
-            yesButton.visible = true;
-            noButton.visible = true;
-            playGame = false;
-        });
-        instructionsOverlay = this.add.image(270, 480, "instructions");
-        instructionsOverlay.visible = false;
-        instructionsOverlay.setInteractive();
-        instructionsOverlay.on("pointerdown", function () {
-            instructionsOverlay.visible = false;
-        });
+
+        // Display the information button
         info = this.add.sprite(450, 860, "atlas", "info_b.png");
-        info.setInteractive();
-        info.on("pointerdown", () => {
-            instructionsOverlay.visible = true;
-        });
-        gameOverOverlay = this.add.image(270, 480, "gameOver");
-        gameOverOverlay.visible = false;
-        gameOverOverlay.setInteractive();
-        gameOverOverlay.setDepth(0);
-        gameOverOverlay.on("pointerdown", function () {
-            restartGame();
-        });
-        pausedOverlay = this.add.image(270, 480, "paused");
-        pausedOverlay.visible = false;
-        pausedOverlay.setInteractive();
-        pausedOverlay.on("pointerdown", function () {
-            startPausedGame();
-        });
     }
 }
 
-function timer() {
-    if (playGame) {
-        gameTimeout = setTimeout(function () {
-            timeText.setText("Time: " + time.toString());
-            timeText.setFont("roboto-slab, serif");
-            timeText.setFontSize("35px");
-            time--;
-            if (time == -1) {
-                gameOver();
-            } else {
-                timer();
-            }
-        }, 1000);
-    }
-}
-
-function startGame() {
-    pause.visible = true;
-    start.visible = false;
-
-    resetTimer();
-
-    const myTimeout = setTimeout(changeDisplay, 1000);
-}
-
-function changeDisplay() {
-    clearButtons();
-    changeTargetNumber();
-}
-
-function updateHUD() {
-    increaseScore();
-    clearTotal();
-    changeDisplay();
-}
-
-function resetTimer() {
-    playGame = true;
-    time = getTime(score);
-    timer();
-}
-
-function restartGame() {
-    pause.visible = false;
-    start.visible = true;
-    gameOverOverlay.visible = false;
-    resetButtons();
-    resetTargetNumber();
-    time = 0;
-    timeText.setText("Time: " + time.toString());
-    timeText.setFont("roboto-slab, serif");
-    timeText.setFontSize("35px");
-    total = 0;
-    totalText.setText("Total: " + total.toString());
-    totalText.setFont("roboto-slab, serif");
-    totalText.setFontSize("35px");
-    score = 0;
-    scoreText.setText("Score: " + score.toString());
-    scoreText.setFont("roboto-slab, serif");
-    scoreText.setFontSize("35px");
-    scoreText.x = 340;
-    scoreText.y = 50;
-}
-
-function pauseGame() {
-    playGame = false;
-    pausedOverlay.visible = true;
-}
-
-function startPausedGame() {
-    playGame = true;
-    pausedOverlay.visible = false;
-    timer();
-}
-
-function clearButtons() {
-    one.setFrame("1.png");
-    one.setInteractive();
-    two.setFrame("2.png");
-    two.setInteractive();
-    three.setFrame("3.png");
-    three.setInteractive();
-    four.setFrame("4.png");
-    four.setInteractive();
-    five.setFrame("5.png");
-    five.setInteractive();
-    six.setFrame("6.png");
-    six.setInteractive();
-    seven.setFrame("7.png");
-    seven.setInteractive();
-    eight.setFrame("8.png");
-    eight.setInteractive();
-    nine.setFrame("9.png");
-    nine.setInteractive();
-    clear.setFrame("clear.png");
-    clear.setInteractive();
-}
-
-function resetButtons() {
-    one.setFrame("1-over.png");
-    two.setFrame("2-over.png");
-    three.setFrame("3-over.png");
-    four.setFrame("4-over.png");
-    five.setFrame("5-over.png");
-    six.setFrame("6-over.png");
-    seven.setFrame("7-over.png");
-    eight.setFrame("8-over.png");
-    nine.setFrame("9-over.png");
-    clear.setFrame("clear-red.png");
-
-    removeAllInteractive();
-}
-
-function removeAllInteractive() {
-    one.removeInteractive();
-    two.removeInteractive();
-    three.removeInteractive();
-    four.removeInteractive();
-    five.removeInteractive();
-    six.removeInteractive();
-    seven.removeInteractive();
-    eight.removeInteractive();
-    nine.removeInteractive();
-    clear.removeInteractive();
-}
-
-function resetTargetNumber() {
-    target.setFrame("0-display.png");
-}
-
-function changeTargetNumber() {
-    upperLimit = getUpperLimit(score);
-    displayValue = Math.floor(Math.random() * upperLimit) + 1;
-    display = displayValue.toString() + "-display.png";
-    target.visible = true;
-    target.setFrame(display);
-}
-
-function gameOver() {
-    gameOverOverlay.visible = true;
-    playGame = false;
-    scoreText.setText("Score: " + score.toString());
-    scoreText.setFont("roboto-slab, serif");
-    scoreText.setFontSize("60px");
-    scoreText.setDepth(1);
-    scoreText.x = 135;
-    scoreText.y = 285;
-}
-
-function clearTotal() {
-    total = 0;
-    totalText.setText("Total: " + total.toString());
-    totalText.setFont("roboto-slab, serif");
-    totalText.setFontSize("35px");
-}
-
-function increaseScore() {
-    score = score + 1;
-    scoreText.setText("Score: " + score.toString());
-    scoreText.setFont("roboto-slab, serif");
-    scoreText.setFontSize("35px");
-}
-
-function getUpperLimit(score) {
-    if (score >= 0 && score < 50) {
-        return 15;
-    } else if (score >= 50 && score < 100) {
-        return 20;
-    } else {
-        return 30;
-    }
-}
-
-function getTime(score) {
-    if (score >= 0 && score < 50) {
-        return 10;
-    } else if (score >= 50 && score < 100) {
-        return 8;
-    } else if (score >= 100 && score < 150) {
-        return 6;
-    } else if (score >= 150 && score < 200) {
-        return 4;
-    } else {
-        return 3;
-    }
-}
-
+/*
+* Function to resize the canvas
+*/
 function resizeGame() {
     var canvas = document.querySelector("canvas");
     var windowWidth = window.innerWidth;
