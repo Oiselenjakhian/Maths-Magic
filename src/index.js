@@ -1,39 +1,45 @@
-import Phaser from 'phaser';
-import logoImg from './assets/logo.png';
+import Phaser from "phaser";
 
-class MyGame extends Phaser.Scene
-{
-    constructor ()
-    {
+class MyGame extends Phaser.Scene {
+    constructor() {
         super();
     }
 
-    preload ()
-    {
-        this.load.image('logo', logoImg);
-    }
-      
-    create ()
-    {
-        const logo = this.add.image(400, 150, 'logo');
-      
-        this.tweens.add({
-            targets: logo,
-            y: 450,
-            duration: 2000,
-            ease: "Power2",
-            yoyo: true,
-            loop: -1
-        });
-    }
+    preload() {}
+
+    create() {}
 }
 
-const config = {
-    type: Phaser.AUTO,
-    parent: 'phaser-example',
-    width: 800,
-    height: 600,
-    scene: MyGame
-};
+window.onload = function () {
+    const config = {
+        type: Phaser.AUTO,
+        parent: "phaser-example",
+        width: 540,
+        height: 960,
+        scene: MyGame,
+    };
 
-const game = new Phaser.Game(config);
+    /**
+     * Resize the canvas to always appear in the viewport
+     * Credit to Emanuele Feronato
+    */
+    function resizeGame() {
+        var canvas = document.querySelector("canvas");
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+        var windowRatio = windowWidth / windowHeight;
+        var gameRatio = game.config.width / game.config.height;
+        if (windowRatio < gameRatio) {
+            canvas.style.width = windowWidth + "px";
+            canvas.style.height = windowWidth / gameRatio + "px";
+        } else {
+            canvas.style.width = windowHeight * gameRatio + "px";
+            canvas.style.height = windowHeight + "px";
+        }
+    }
+
+    const game = new Phaser.Game(config);
+    window.focus();
+    resizeGame();
+    window.addEventListener("resize", resizeGame);
+};
