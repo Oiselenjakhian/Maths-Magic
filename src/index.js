@@ -1,28 +1,28 @@
 import Phaser from "phaser";
+import config from "./config/config";
+import BootScene from "./scenes/BootScene";
+import PreloaderScene from "./scenes/PreloaderScene";
+import TitleScene from "./scenes/TitleScene";
+import MenuScene from "./scenes/MenuScene";
 
-class MyGame extends Phaser.Scene {
+class MyGame extends Phaser.Game {
     constructor() {
-        super();
+        super(config);
+        this.scene.add("Boot", BootScene);
+        this.scene.add("Preloader", PreloaderScene);
+        this.scene.add("Title", TitleScene);
+        this.scene.add("Menu", MenuScene);
+        this.scene.start("Boot");
     }
-
-    preload() {}
-
-    create() {}
 }
 
-window.onload = function () {
-    const config = {
-        type: Phaser.AUTO,
-        parent: "phaser-example",
-        width: 540,
-        height: 960,
-        scene: MyGame,
-    };
+var game = new MyGame();
 
+window.onload = function () {
     /**
      * Resize the canvas to always appear in the viewport
      * Credit to Emanuele Feronato
-    */
+     */
     function resizeGame() {
         var canvas = document.querySelector("canvas");
         var windowWidth = window.innerWidth;
@@ -38,7 +38,6 @@ window.onload = function () {
         }
     }
 
-    const game = new Phaser.Game(config);
     window.focus();
     resizeGame();
     window.addEventListener("resize", resizeGame);
