@@ -62,6 +62,7 @@ export default class PreloaderScene extends Phaser.Scene {
             "instructions_btn",
             require("../assets/images/instructions.png")
         );
+        this.load.image("options_btn", require("../assets/images/options.png"));
         this.load.image("click_start", require("../assets/images/click.png"));
         this.load.image(
             "instructions",
