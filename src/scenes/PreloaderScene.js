@@ -63,7 +63,9 @@ export default class PreloaderScene extends Phaser.Scene {
             require("../assets/images/instructions.png")
         );
         this.load.image("options_btn", require("../assets/images/options.png"));
-        this.load.image("click_start", require("../assets/images/click.png"));
+        this.load.image("check_btn", require("../assets/images/blue_box.png"));
+        this.load.image("clear_btn", require("../assets/images/grey_box.png"));
+        this.load.image("menu_btn", require("../assets/images/menu.png"));
         this.load.image(
             "instructions",
             require("../assets/images/instructions-overlay.png")
@@ -109,6 +111,6 @@ export default class PreloaderScene extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("Title");
+        this.scene.start("Menu");
     }
 }

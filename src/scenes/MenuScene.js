@@ -35,5 +35,27 @@ export default class MenuScene extends Phaser.Scene {
             instructionsOverlay.visible = true;
         });
         var options = this.add.image(270, 810, "options_btn");
+        options.setInteractive();
+        options.on(
+            "pointerdown",
+            function () {
+                this.scene.start("Options");
+            },
+            this
+        );
+
+        this.model = this.sys.game.globals.model;
+        if (
+            this.model.musicOn === true &&
+            this.model.bgMusicPlaying === false
+        ) {
+            this.bgMusic = this.sound.add("background_music", {
+                volume: 0.15,
+                loop: true,
+            });
+            this.bgMusic.play();
+            this.model.bgMusicPlaying = true;
+            this.sys.game.globals.bgMusic = this.bgMusic;
+        }
     }
 }
