@@ -10,6 +10,14 @@ export default class MenuScene extends Phaser.Scene {
         var logo = this.add.image(270, 150, "logo");
         logo.setDepth(1);
         var play = this.add.image(270, 360, "play_btn");
+        play.setInteractive();
+        play.on(
+            "pointerdown",
+            function () {
+                this.scene.start("Game");
+            },
+            this
+        );
         var aboutOverlay = this.add.image(270, 480, "aboutOverlay");
         aboutOverlay.setDepth(1);
         aboutOverlay.visible = false;

@@ -1,10 +1,11 @@
 import Phaser from "phaser";
 import config from "./config/config";
+import Model from "./Model";
 import BootScene from "./scenes/BootScene";
 import PreloaderScene from "./scenes/PreloaderScene";
 import MenuScene from "./scenes/MenuScene";
 import OptionsScene from "./scenes/OptionsScene";
-import Model from "./Model";
+import GameScene from "./scenes/GameScene";
 
 class MyGame extends Phaser.Game {
     constructor() {
@@ -15,6 +16,7 @@ class MyGame extends Phaser.Game {
         this.scene.add("Preloader", PreloaderScene);
         this.scene.add("Menu", MenuScene);
         this.scene.add("Options", OptionsScene);
+        this.scene.add("Game", GameScene);
         this.scene.start("Boot");
     }
 }
