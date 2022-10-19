@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Countdown from "../Countdown";
 
 var bg_plain;
 var pos_target_num;
@@ -6,6 +7,12 @@ var pos_buttons;
 var timeText;
 var totalText;
 var scoreText;
+var time = 0;
+var total = 0;
+var score = 0;
+var upperLimit;
+var displayValue;
+var display;
 var one;
 var two;
 var three;
@@ -26,10 +33,14 @@ var retry;
 var instructionsOverlay;
 var info;
 var pausedOverlay;
+var playGame;
+var countdown;
+var timeLeft;
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
         super("Game");
+        countdown = new Countdown().setDuration(10);
     }
 
     create() {
@@ -71,9 +82,17 @@ export default class GameScene extends Phaser.Scene {
         target = this.add.sprite(270, 480, "atlas", "0-display.png");
         pause = this.add.sprite(270, 870, "atlas", "pause_button.png");
         pause.setScale(2);
+        pause.setInteractive();
         pause.setVisible(false);
         start = this.add.sprite(270, 870, "atlas", "start_button.png");
         start.setScale(2);
+        start.setInteractive();
+        start.on("pointerdown", () => {
+            if (this.model.soundOn) {
+                this.startGameSound.play();
+            }
+            this.startGame();
+        });
         reloadScreen = this.add.image(270, 480, "reload_screen");
         reloadScreen.visible = false;
         reloadScreen.setDepth(1);
@@ -87,5 +106,85 @@ export default class GameScene extends Phaser.Scene {
         info = this.add.sprite(450, 860, "atlas", "info_b.png");
         pausedOverlay = this.add.image(270, 480, "paused");
         pausedOverlay.visible = false;
+    }
+
+    update() {
+        if (playGame) {
+            timeLeft = countdown.getTimeLeft();
+            timeLeft = Math.ceil(timeLeft);
+            timeText.setText("Time: " + timeLeft.toString());
+        }
+
+        if (timeLeft == 0) {
+            this.scene.start("GameOver", { score: score });
+        }
+    }
+
+    startGame() {
+        pause.visible = true;
+        start.visible = false;
+        this.changeDisplay();
+        playGame = true;
+        countdown.start();
+    }
+
+    changeDisplay() {
+        this.clearButtons();
+        this.changeTargetNumber();
+    }
+
+    clearButtons() {
+        one.setFrame("1.png");
+        one.setInteractive();
+        two.setFrame("2.png");
+        two.setInteractive();
+        three.setFrame("3.png");
+        three.setInteractive();
+        four.setFrame("4.png");
+        four.setInteractive();
+        five.setFrame("5.png");
+        five.setInteractive();
+        six.setFrame("6.png");
+        six.setInteractive();
+        seven.setFrame("7.png");
+        seven.setInteractive();
+        eight.setFrame("8.png");
+        eight.setInteractive();
+        nine.setFrame("9.png");
+        nine.setInteractive();
+        clear.setFrame("clear.png");
+        clear.setInteractive();
+    }
+
+    changeTargetNumber() {
+        upperLimit = this.getUpperLimit(score);
+        displayValue = Math.floor(Math.random() * upperLimit) + 1;
+        display = displayValue.toString() + "-display.png";
+        target.visible = true;
+        target.setFrame(display);
+    }
+
+    getUpperLimit(score) {
+        if (score >= 0 && score < 50) {
+            return 15;
+        } else if (score >= 50 && score < 100) {
+            return 20;
+        } else {
+            return 30;
+        }
+    }
+
+    getTime(score) {
+        if (score >= 0 && score < 50) {
+            return 10;
+        } else if (score >= 50 && score < 100) {
+            return 8;
+        } else if (score >= 100 && score < 150) {
+            return 6;
+        } else if (score >= 150 && score < 200) {
+            return 4;
+        } else {
+            return 3;
+        }
     }
 }

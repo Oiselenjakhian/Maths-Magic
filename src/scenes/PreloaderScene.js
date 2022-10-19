@@ -66,6 +66,8 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image("check_btn", require("../assets/images/blue_box.png"));
         this.load.image("clear_btn", require("../assets/images/grey_box.png"));
         this.load.image("menu_btn", require("../assets/images/menu.png"));
+        this.load.image("replayBtn", require("../assets/images/replay.png"));
+        this.load.image("tweetBtn", require("../assets/images/tweet.png"));
         this.load.image(
             "instructions",
             require("../assets/images/instructions-overlay.png")
