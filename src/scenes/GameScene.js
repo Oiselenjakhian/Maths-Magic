@@ -88,11 +88,10 @@ export default class GameScene extends Phaser.Scene {
 
             if (total == displayValue) {
                 one.setFrame("1-over.png");
-                this.removeAllInteractive();
                 if (this.model.soundOn) {
                     this.bubbleSound.play();
                 }
-                this.resetTimer();
+                countdown.reset();
                 this.updateHUD();
             } else {
                 one.setFrame("1-over.png");
@@ -100,19 +99,178 @@ export default class GameScene extends Phaser.Scene {
             }
         });
         two = this.add.sprite(60, 550, "atlas", "2-over.png");
+        two.on("pointerdown", () => {
+            total = total + 2;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                two.setFrame("2-over.png");
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                countdown.reset();
+                this.updateHUD();
+            } else {
+                two.setFrame("2-over.png");
+                two.removeInteractive();
+            }
+        });
         three = this.add.sprite(60, 410, "atlas", "3-over.png");
+        three.on("pointerdown", () => {
+            total = total + 3;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                three.setFrame("3-over.png");
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                countdown.reset();
+                this.updateHUD();
+            } else {
+                three.setFrame("3-over.png");
+                three.removeInteractive();
+            }
+        });
         four = this.add.sprite(140, 300, "atlas", "4-over.png");
+        four.on("pointerdown", () => {
+            total = total + 4;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                four.setFrame("4-over.png");
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                countdown.reset();
+                this.updateHUD();
+            } else {
+                four.setFrame("4-over.png");
+                four.removeInteractive();
+            }
+        });
         five = this.add.sprite(270, 260, "atlas", "5-over.png");
+        five.on("pointerdown", () => {
+            total = total + 5;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                five.setFrame("5-over.png");
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                countdown.reset();
+                this.updateHUD();
+            } else {
+                five.setFrame("5-over.png");
+                five.removeInteractive();
+            }
+        });
         six = this.add.sprite(400, 300, "atlas", "6-over.png");
+        six.on("pointerdown", () => {
+            total = total + 6;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                six.setFrame("6-over.png");
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                countdown.reset();
+                this.updateHUD();
+            } else {
+                six.setFrame("6-over.png");
+                six.removeInteractive();
+            }
+        });
         seven = this.add.sprite(480, 410, "atlas", "7-over.png");
+        seven.on("pointerdown", () => {
+            total = total + 7;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                seven.setFrame("7-over.png");
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                countdown.reset();
+                this.updateHUD();
+            } else {
+                seven.setFrame("7-over.png");
+                seven.removeInteractive();
+            }
+        });
         eight = this.add.sprite(480, 550, "atlas", "8-over.png");
+        eight.on("pointerdown", () => {
+            total = total + 8;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                eight.setFrame("8-over.png");
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                countdown.reset();
+                this.updateHUD();
+            } else {
+                eight.setFrame("8-over.png");
+                eight.removeInteractive();
+            }
+        });
         nine = this.add.sprite(400, 660, "atlas", "9-over.png");
+        nine.on("pointerdown", () => {
+            total = total + 9;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                nine.setFrame("9-over.png");
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                countdown.reset();
+                this.updateHUD();
+            } else {
+                nine.setFrame("9-over.png");
+                nine.removeInteractive();
+            }
+        });
         clear = this.add.sprite(270, 700, "atlas", "clear-red.png");
+        clear.on("pointerdown", () => {
+            this.clearButtons();
+            this.clearTotal();
+        });
         target = this.add.sprite(270, 480, "atlas", "0-display.png");
         pause = this.add.sprite(270, 870, "atlas", "pause_button.png");
         pause.setScale(2);
         pause.setInteractive();
         pause.setVisible(false);
+        pause.on("pointerdown", () => {
+            this.pauseGame();
+        });
         start = this.add.sprite(270, 870, "atlas", "start_button.png");
         start.setScale(2);
         start.setInteractive();
@@ -127,14 +285,51 @@ export default class GameScene extends Phaser.Scene {
         reloadScreen.setDepth(1);
         yesButton = this.add.image(180, 500, "yes_btn");
         yesButton.visible = false;
+        yesButton.setInteractive();
+        yesButton.setDepth(2);
+        yesButton.on("pointerdown", () => {
+            reloadScreen.visible = false;
+            yesButton.visible = false;
+            noButton.visible = false;
+            this.restartGame();
+        });
         noButton = this.add.image(350, 500, "no_btn");
         noButton.visible = false;
+        noButton.setInteractive();
+        noButton.setDepth(2);
+        noButton.on("pointerdown", () => {
+            reloadScreen.visible = false;
+            yesButton.visible = false;
+            noButton.visible = false;
+            countdown.start();
+        });
         retry = this.add.sprite(100, 860, "atlas", "retry_b.png");
+        retry.setInteractive();
+        retry.on("pointerdown", () => {
+            reloadScreen.visible = true;
+            yesButton.visible = true;
+            noButton.visible = true;
+            countdown.pause();
+        });
         instructionsOverlay = this.add.image(270, 480, "instructions");
         instructionsOverlay.visible = false;
+        instructionsOverlay.setInteractive();
+        instructionsOverlay.on("pointerdown", () => {
+            instructionsOverlay.visible = false;
+            countdown.start();
+        });
         info = this.add.sprite(450, 860, "atlas", "info_b.png");
+        info.setInteractive();
+        info.on("pointerdown", () => {
+            instructionsOverlay.visible = true;
+            countdown.pause();
+        });
         pausedOverlay = this.add.image(270, 480, "paused");
         pausedOverlay.visible = false;
+        pausedOverlay.setInteractive();
+        pausedOverlay.on("pointerdown", () => {
+            this.startPausedGame();
+        });
     }
 
     update() {
@@ -155,6 +350,32 @@ export default class GameScene extends Phaser.Scene {
         this.changeDisplay();
         playGame = true;
         countdown.start();
+    }
+
+    restartGame() {
+        pause.visible = false;
+        start.visible = true;
+        this.resetButtons();
+        this.resetTargetNumber();
+        countdown.reset();
+        time = 0;
+        timeText.setText("Time: " + time.toString());
+        total = 0;
+        totalText.setText("Total: " + total.toString());
+        score = 0;
+        scoreText.setText("Score: " + score.toString());
+    }
+
+    startPausedGame() {
+        playGame = true;
+        countdown.start();
+        pausedOverlay.visible = false;
+    }
+
+    pauseGame() {
+        playGame = false;
+        countdown.pause();
+        pausedOverlay.visible = true;
     }
 
     changeDisplay() {
@@ -193,6 +414,21 @@ export default class GameScene extends Phaser.Scene {
         target.setFrame(display);
     }
 
+    resetButtons() {
+        one.setFrame("1-over.png");
+        two.setFrame("2-over.png");
+        three.setFrame("3-over.png");
+        four.setFrame("4-over.png");
+        five.setFrame("5-over.png");
+        six.setFrame("6-over.png");
+        seven.setFrame("7-over.png");
+        eight.setFrame("8-over.png");
+        nine.setFrame("9-over.png");
+        clear.setFrame("clear-red.png");
+
+        this.removeAllInteractive();
+    }
+
     removeAllInteractive() {
         one.removeInteractive();
         two.removeInteractive();
@@ -206,9 +442,8 @@ export default class GameScene extends Phaser.Scene {
         clear.removeInteractive();
     }
 
-    resetTimer() {
-        time = this.getTime(score);
-        countdown.setDuration(time);
+    resetTargetNumber() {
+        target.setFrame("0-display.png");
     }
 
     updateHUD() {
@@ -241,13 +476,13 @@ export default class GameScene extends Phaser.Scene {
         if (score >= 0 && score < 50) {
             return 10;
         } else if (score >= 50 && score < 100) {
-            return 8;
+            return 10;
         } else if (score >= 100 && score < 150) {
-            return 6;
+            return 10;
         } else if (score >= 150 && score < 200) {
-            return 4;
+            return 10;
         } else {
-            return 3;
+            return 10;
         }
     }
 }
