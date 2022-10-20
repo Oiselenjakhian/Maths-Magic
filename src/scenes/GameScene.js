@@ -43,6 +43,15 @@ export default class GameScene extends Phaser.Scene {
         countdown = new Countdown().setDuration(10);
     }
 
+    init() {
+        time = 0;
+        total = 0;
+        score = 0;
+        playGame = false;
+        countdown.reset();
+        timeLeft = countdown.getTimeLeft();
+    }
+
     create() {
         this.model = this.sys.game.globals.model;
         this.clickSound = this.sound.add("click");
@@ -70,6 +79,26 @@ export default class GameScene extends Phaser.Scene {
         });
 
         one = this.add.sprite(140, 660, "atlas", "1-over.png");
+        one.on("pointerdown", () => {
+            total = total + 1;
+            totalText.setText("Total: " + total.toString());
+            if (this.model.soundOn) {
+                this.clickSound.play();
+            }
+
+            if (total == displayValue) {
+                one.setFrame("1-over.png");
+                this.removeAllInteractive();
+                if (this.model.soundOn) {
+                    this.bubbleSound.play();
+                }
+                this.resetTimer();
+                this.updateHUD();
+            } else {
+                one.setFrame("1-over.png");
+                one.removeInteractive();
+            }
+        });
         two = this.add.sprite(60, 550, "atlas", "2-over.png");
         three = this.add.sprite(60, 410, "atlas", "3-over.png");
         four = this.add.sprite(140, 300, "atlas", "4-over.png");
@@ -162,6 +191,40 @@ export default class GameScene extends Phaser.Scene {
         display = displayValue.toString() + "-display.png";
         target.visible = true;
         target.setFrame(display);
+    }
+
+    removeAllInteractive() {
+        one.removeInteractive();
+        two.removeInteractive();
+        three.removeInteractive();
+        four.removeInteractive();
+        five.removeInteractive();
+        six.removeInteractive();
+        seven.removeInteractive();
+        eight.removeInteractive();
+        nine.removeInteractive();
+        clear.removeInteractive();
+    }
+
+    resetTimer() {
+        time = this.getTime(score);
+        countdown.setDuration(time);
+    }
+
+    updateHUD() {
+        this.increaseScore();
+        this.clearTotal();
+        this.changeDisplay();
+    }
+
+    increaseScore() {
+        score = score + 1;
+        scoreText.setText("Score: " + score.toString());
+    }
+
+    clearTotal() {
+        total = 0;
+        totalText.setText("Total: " + total.toString());
     }
 
     getUpperLimit(score) {

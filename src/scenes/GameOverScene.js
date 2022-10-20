@@ -22,6 +22,27 @@ export default class OptionsScene extends Phaser.Scene {
             }
         );
         var replay = this.add.image(150, 675, "replayBtn");
+        replay.setInteractive();
+        replay.on(
+            "pointerdown",
+            function () {
+                this.scene.start("Game");
+            },
+            this
+        );
         var tweet = this.add.image(390, 675, "tweetBtn");
+        tweet.setInteractive();
+        tweet.on("pointerdown", this.handleShareScore, this);
+    }
+
+    handleShareScore() {
+        var text = "I scored " + this.score + " in Maths Magic.";
+        var url = "https://twitter.com/intent/tweet";
+        url += "?text=" + text;
+        this.openURL(url);
+    }
+
+    openURL(url) {
+        window.open(url, "_blank");
     }
 }
